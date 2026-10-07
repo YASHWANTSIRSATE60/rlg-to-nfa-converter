@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RLG to NFA Converter | Theory of Computation PBL</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar"><div class="logo">Σ</div><span>RLG to NFA Converter</span></div>
+<main>
+<section class="card hero">
+  <span class="badge">Right-Linear Grammar → NFA</span>
+  <h1>RLG to NFA Converter</h1>
+  <p class="lead">Parse a Right-Linear Grammar, generate its NFA transition table and diagram, and check whether a string belongs to the language.</p>
+  <p class="who"><b>Yashwant Indrakumar Sirsate</b> · CM24060 · 5th Semester CSE (AI&amp;ML)<br>Theory of Computation (N-PCCCM503T) · S. B. Jain Institute of Technology, Management &amp; Research, Nagpur · Session 2026–27 (ODD)</p>
+  <hr>
+  <h4>VERIFICATION TEST CASES (CLICK TO TEST):</h4>
+  <div id="testBtns" class="tbtns"></div>
+  <button id="btnAll" class="btn ghost">Run all verification tests</button>
+  <div id="testBanner" class="banner" hidden></div>
+</section>
+
+<section class="card" id="sec1">
+  <h2><i>1</i>Section 1 — Right-Linear Grammar</h2>
+  <label for="grammar">Grammar (one production per line)</label>
+  <textarea id="grammar" rows="5" spellcheck="false" placeholder="S -> aA | b&#10;A -> aS | b"></textarea>
+  <p class="hint">Example: <code>S -&gt; aA | b</code> then <code>A -&gt; aS | b</code>. Use <code>-&gt;</code> or <code>→</code>, <code>|</code> for alternatives, <code>ε</code> for the empty string. Capitals = non-terminals, lowercase/digits = terminals. First line = start symbol.</p>
+  <div class="btns">
+    <button id="btnGen" class="btn primary">Generate NFA</button>
+    <button id="btnEx" class="btn">Load Example</button>
+    <button id="btnClear" class="btn">Clear</button>
+    <button id="btnReset" class="btn">Reset</button>
+  </div>
+  <div class="detect">
+    <div><span>Detected non-terminals (V)</span><div id="ntChips" class="pills">—</div></div>
+    <div><span>Detected terminals (T)</span><div id="tmChips" class="pills">—</div></div>
+    <div><span>Start symbol (S)</span><div id="stChips" class="pills">—</div></div>
+  </div>
+  <div id="validation" class="status" hidden></div>
+</section>
+
+<section class="card" id="sec2" hidden>
+  <h2><i>2</i>Section 2 — Generate NFA</h2>
+  <div id="cards" class="cards"></div>
+  <h3>NFA transition table</h3>
+  <div class="tablewrap"><table id="ttable"></table></div>
+  <h3>Transition function δ (matrix)</h3>
+  <p class="hint">→ start state · * final state · ∅ no transition</p>
+  <div class="tablewrap"><table id="matrix"></table></div>
+  <h3>NFA diagram</h3>
+  <div id="diagram" class="diagram"></div>
+  <p class="hint">Double circle = final state · arrow labelled "start" = start state · generated dynamically from the grammar.</p>
+  <div class="note"><b>Conversion convention</b>
+    <ul><li><code>A → aB</code> gives <code>A --a--&gt; B</code></li><li><code>A → a</code> gives <code>A --a--&gt; F</code>, where F is the accepting final state</li><li><code>A → ε</code> gives no transition; A itself becomes a final state</li></ul>
+    <ul id="convNote"></ul></div>
+</section>
+
+<section class="card" id="sec3" hidden>
+  <h2><i>3</i>Section 3 — Check a String</h2>
+  <label for="teststr">Enter String</label>
+  <input id="teststr" type="text" autocomplete="off" spellcheck="false" placeholder="e.g. aab (leave empty to test ε)">
+  <button id="btnTest" class="btn primary wide">Check String</button>
+  <div id="result"></div>
+</section>
+
+<section class="card">
+  <h2><i>4</i>Theory in Brief</h2>
+  <details><summary>What is a Right-Linear Grammar?</summary><p>G = (V, T, P, S) where every production is <code>A → wB</code> or <code>A → w</code>: a non-terminal may appear only at the right end. This tool uses the normal form <code>A → aB | a | ε</code>. RLGs generate exactly the regular languages.</p></details>
+  <details><summary>What is an NFA?</summary><p>M = (Q, Σ, δ, q₀, F) with δ : Q × Σ → 2<sup>Q</sup>. A state may have several (or no) moves on a symbol. A string is accepted if at least one path ends in a final state.</p></details>
+  <details><summary>How does RLG convert to NFA?</summary><p>Q = V ∪ {F}, q₀ = S, Σ = T. For <code>A → aB</code> add B to δ(A, a); for <code>A → a</code> add F to δ(A, a); for <code>A → ε</code> put A in the final set. Final set = {F} ∪ ε-states.</p></details>
+  <details><summary>Meaning of A → aB, A → a and the final state</summary><p><code>A → aB</code>: read a, continue from B. <code>A → a</code>: read a and stop in F. The final state decides acceptance after the whole string is read. (If the grammar already has a non-terminal named F, the final state is shown as qf.)</p></details>
+</section>
+</main>
+<footer>Yashwant Indrakumar Sirsate | CM24060 | Theory of Computation</footer>
+<script src="script.js"></script>
+</body>
+</html>
